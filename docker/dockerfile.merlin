@@ -18,6 +18,14 @@ RUN echo "Skipping copy of /opt/tritonserver/backends/fil. (Why does this fail o
 
 FROM build-${TARGETARCH} as build
 
+FROM ${BASE_IMAGE} as build-amd64
+ONBUILD COPY --chown=1000:1000 --from=triton /opt/tritonserver/backends/fil /opt/tritonserver/backends/fil/
+
+FROM ${BASE_IMAGE} as build-arm64
+RUN echo "Skipping copy of /opt/tritonserver/backends/fil. (Why does this fail on arm64?)"
+
+FROM build-${TARGETARCH} as build
+
 # Args
 ARG DASK_VER=2022.07.1
 ARG MERLIN_VER=main
